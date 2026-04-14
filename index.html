@@ -1,837 +1,1256 @@
-<!DOCTYPE html>
-<html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nusa Brew | Specialty Coffee Shop</title>
-    <meta
-      name="description"
-      content="Nusa Brew adalah specialty coffee shop modern dan hangat. Nikmati kopi berkualitas, suasana nyaman, dan pelayanan barista ahli."
-    />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7p1Yhn7dH2Pi+ca8F7cKJCCa9qe5n3Yf6QfA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      href="https://unpkg.com/aos@2.3.1/dist/aos.css"
-      rel="stylesheet"
-    />
-
-    <style>
-      :root {
-        --brown: #3b1f0a;
-        --cream: #f5edd6;
-        --gold: #c89b4f;
-        --white: #ffffff;
-        --text-dark: #2a1608;
-        --muted: #7d6754;
-        --shadow: 0 10px 30px rgba(59, 31, 10, 0.2);
-        --radius: 18px;
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        font-family: "Inter", sans-serif;
-        color: var(--text-dark);
-        background-color: var(--cream);
-        line-height: 1.6;
-        overflow-x: hidden;
-        background-image: radial-gradient(
-            circle at 20% 20%,
-            rgba(200, 155, 79, 0.08),
-            transparent 40%
-          ),
-          radial-gradient(
-            circle at 80% 0%,
-            rgba(59, 31, 10, 0.08),
-            transparent 35%
-          );
-      }
-
-      h1,
-      h2,
-      h3,
-      h4 {
-        font-family: "Playfair Display", serif;
-        color: var(--brown);
-      }
-
-      img {
-        width: 100%;
-        display: block;
-      }
-
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      .container {
-        width: min(1120px, 92vw);
-        margin-inline: auto;
-      }
-
-      .section {
-        padding: 4rem 0;
-      }
-
-      .section-title {
-        font-size: clamp(1.8rem, 3vw, 2.6rem);
-        text-align: center;
-        margin-bottom: 0.8rem;
-      }
-
-      .section-subtitle {
-        text-align: center;
-        color: var(--muted);
-        max-width: 720px;
-        margin: 0 auto 2rem;
-      }
-
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        border: none;
-        border-radius: 999px;
-        padding: 0.85rem 1.4rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.25s ease;
-      }
-
-      .btn-primary {
-        background: var(--gold);
-        color: var(--brown);
-        box-shadow: var(--shadow);
-      }
-
-      .btn-primary:hover {
-        transform: translateY(-2px);
-        filter: brightness(1.05);
-      }
-
-      .btn-secondary {
-        background: rgba(255, 255, 255, 0.18);
-        color: var(--white);
-        border: 1px solid rgba(255, 255, 255, 0.35);
-        backdrop-filter: blur(8px);
-      }
-
-      .btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.28);
-      }
-
-      .loader {
-        position: fixed;
-        inset: 0;
-        background: linear-gradient(140deg, #2d1606, #4b2c14);
-        display: grid;
-        place-items: center;
-        z-index: 2000;
-        transition: 0.45s ease;
-      }
-
-      .loader.hidden {
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-      }
-
-      .loader-content {
-        text-align: center;
-        color: var(--cream);
-      }
-
-      .loader-content i {
-        font-size: 2.6rem;
-        color: var(--gold);
-        margin-bottom: 0.5rem;
-        animation: pulse 1.4s infinite;
-      }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          transform: scale(1);
-          opacity: 0.85;
-        }
-        50% {
-          transform: scale(1.15);
-          opacity: 1;
-        }
-      }
-
-      .navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1500;
-        transition: 0.3s ease;
-      }
-
-      .nav-inner {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 0;
-      }
-
-      .logo {
-        font-family: "Playfair Display", serif;
-        font-size: 1.35rem;
-        font-weight: 700;
-        color: var(--white);
-        letter-spacing: 0.4px;
-      }
-
-      .logo i {
-        color: var(--gold);
-        margin-right: 0.35rem;
-      }
-
-      .nav-menu {
-        display: flex;
-        gap: 1.1rem;
-        font-size: 0.92rem;
-        color: var(--white);
-      }
-
-      .nav-menu a {
-        font-weight: 500;
-        transition: color 0.2s ease;
-      }
-
-      .nav-menu a:hover {
-        color: var(--gold);
-      }
-
-      .navbar.scrolled {
-        background: rgba(245, 237, 214, 0.7);
-        backdrop-filter: blur(12px);
-        border-bottom: 1px solid rgba(59, 31, 10, 0.12);
-      }
-
-      .navbar.scrolled .logo,
-      .navbar.scrolled .nav-menu {
-        color: var(--brown);
-      }
-
-      .hero {
-        min-height: 100vh;
-        display: grid;
-        align-items: center;
-        position: relative;
-        color: var(--white);
-        background-image: linear-gradient(
-            rgba(31, 16, 6, 0.58),
-            rgba(31, 16, 6, 0.7)
-          ),
-          url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1600&q=80");
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-      }
-
-      .hero::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(
-          circle at 75% 25%,
-          rgba(200, 155, 79, 0.24),
-          transparent 42%
-        );
-      }
-
-      .hero-content {
-        position: relative;
-        z-index: 1;
-        text-align: center;
-        padding-top: 6rem;
-      }
-
-      .hero h1 {
-        color: var(--white);
-        font-size: clamp(2.2rem, 7vw, 4.6rem);
-        margin-bottom: 1rem;
-      }
-
-      .hero p {
-        max-width: 680px;
-        margin: 0 auto 1.8rem;
-        opacity: 0.92;
-      }
-
-      .hero-actions {
-        display: flex;
-        justify-content: center;
-        gap: 0.8rem;
-        flex-wrap: wrap;
-      }
-
-      .about-grid {
-        display: grid;
-        gap: 1.2rem;
-      }
-
-      .about-story {
-        text-align: center;
-        color: var(--muted);
-      }
-
-      .icon-cards {
-        display: grid;
-        gap: 1rem;
-        margin-top: 1rem;
-      }
-
-      .icon-card {
-        background: var(--white);
-        border-radius: var(--radius);
-        padding: 1.25rem;
-        box-shadow: 0 8px 20px rgba(59, 31, 10, 0.08);
-        text-align: center;
-      }
-
-      .icon-card i {
-        font-size: 1.5rem;
-        color: var(--gold);
-        margin-bottom: 0.5rem;
-      }
-
-      .menu-grid {
-        display: grid;
-        gap: 1rem;
-      }
-
-      .menu-card {
-        background: var(--white);
-        border-radius: var(--radius);
-        overflow: hidden;
-        box-shadow: 0 6px 16px rgba(59, 31, 10, 0.09);
-        transition: transform 0.28s ease, box-shadow 0.28s ease;
-      }
-
-      .menu-card:hover {
-        transform: scale(1.03);
-        box-shadow: 0 14px 28px rgba(59, 31, 10, 0.2);
-      }
-
-      .menu-card img {
-        height: 200px;
-        object-fit: cover;
-      }
-
-      .menu-content {
-        padding: 1rem;
-      }
-
-      .menu-content h3 {
-        margin-bottom: 0.4rem;
-      }
-
-      .price {
-        color: var(--gold);
-        font-weight: 700;
-        margin-top: 0.5rem;
-      }
-
-      .testimonials {
-        background: rgba(255, 255, 255, 0.55);
-      }
-
-      .testimonial-grid {
-        display: grid;
-        gap: 1rem;
-      }
-
-      .testimonial {
-        background: var(--white);
-        border-radius: var(--radius);
-        padding: 1.2rem;
-        box-shadow: 0 8px 24px rgba(59, 31, 10, 0.09);
-      }
-
-      .stars {
-        color: #f5b50a;
-        margin-bottom: 0.6rem;
-      }
-
-      .reviewer {
-        display: flex;
-        align-items: center;
-        margin-top: 0.9rem;
-        gap: 0.75rem;
-      }
-
-      .reviewer img {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        object-fit: cover;
-      }
-
-      .gallery-wrap {
-        columns: 1;
-        column-gap: 1rem;
-      }
-
-      .gallery-item {
-        margin-bottom: 1rem;
-        border-radius: 14px;
-        overflow: hidden;
-        break-inside: avoid;
-      }
-
-      .gallery-item img {
-        border-radius: 14px;
-      }
-
-      .location-grid {
-        display: grid;
-        gap: 1rem;
-      }
-
-      .map iframe {
-        width: 100%;
-        min-height: 300px;
-        border: 0;
-        border-radius: var(--radius);
-      }
-
-      .hours {
-        background: var(--white);
-        border-radius: var(--radius);
-        padding: 1.2rem;
-        box-shadow: 0 8px 20px rgba(59, 31, 10, 0.08);
-      }
-
-      .hours ul {
-        list-style: none;
-        margin: 0.8rem 0;
-      }
-
-      .hours li {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px dashed rgba(59, 31, 10, 0.15);
-        padding: 0.45rem 0;
-      }
-
-      .footer {
-        background: #2f1808;
-        color: #f9f2e2;
-        padding: 3rem 0 1.4rem;
-      }
-
-      .footer-grid {
-        display: grid;
-        gap: 1.3rem;
-      }
-
-      .socials {
-        display: flex;
-        gap: 0.8rem;
-        margin-top: 0.8rem;
-      }
-
-      .socials a {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        display: grid;
-        place-items: center;
-        background: rgba(255, 255, 255, 0.15);
-      }
-
-      .newsletter form {
-        display: flex;
-        gap: 0.6rem;
-        margin-top: 0.7rem;
-        flex-wrap: wrap;
-      }
-
-      .newsletter input {
-        flex: 1 1 180px;
-        border: none;
-        border-radius: 999px;
-        padding: 0.7rem 1rem;
-      }
-
-      .copyright {
-        text-align: center;
-        margin-top: 1.5rem;
-        padding-top: 1rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.15);
-        font-size: 0.9rem;
-        opacity: 0.85;
-      }
-
-      @media (min-width: 700px) {
-        .icon-cards,
-        .menu-grid,
-        .testimonial-grid,
-        .location-grid,
-        .footer-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .gallery-wrap {
-          columns: 2;
-        }
-      }
-
-      @media (min-width: 980px) {
-        .about-grid {
-          gap: 2rem;
-        }
-
-        .icon-cards {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .menu-grid {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .testimonial-grid {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .location-grid {
-          grid-template-columns: 1.2fr 0.8fr;
-        }
-
-        .footer-grid {
-          grid-template-columns: 1fr 1fr 1fr;
-        }
-
-        .gallery-wrap {
-          columns: 3;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .hero {
-          background-attachment: scroll;
-        }
-
-        .nav-menu {
-          gap: 0.65rem;
-          font-size: 0.82rem;
-          flex-wrap: wrap;
-          justify-content: flex-end;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="loader" id="loader">
-      <div class="loader-content">
-        <i class="fa-solid fa-mug-hot"></i>
-        <h2>Nusa Brew</h2>
-        <p>Meracik hangat untuk harimu...</p>
-      </div>
-    </div>
-
-    <header class="navbar" id="navbar">
-      <div class="container nav-inner">
-        <a href="#home" class="logo"><i class="fa-solid fa-seedling"></i>Nusa Brew</a>
-        <nav class="nav-menu">
-          <a href="#menu">Menu</a>
-          <a href="#about">About</a>
-          <a href="#visit">Visit Us</a>
-          <a href="https://wa.me/6281234567890?text=Halo%20Nusa%20Brew%2C%20saya%20ingin%20pesan%20kopi" target="_blank" rel="noopener noreferrer">Order Now</a>
-        </nav>
-      </div>
-    </header>
-
-    <section class="hero" id="home">
-      <div class="container hero-content" data-aos="fade-up">
-        <h1>Satu Tegukan, Satu Cerita</h1>
-        <p>
-          Dari biji pilihan Nusantara hingga latte art yang presisi, Nusa Brew
-          menghadirkan pengalaman specialty coffee yang modern, hangat, dan penuh
-          rasa.
-        </p>
-        <div class="hero-actions">
-          <a
-            class="btn btn-primary"
-            href="https://wa.me/6281234567890?text=Halo%20Nusa%20Brew%2C%20saya%20ingin%20pesan%20kopi"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Pesan Sekarang <i class="fa-brands fa-whatsapp"></i>
-          </a>
-          <a class="btn btn-secondary" href="#menu">Lihat Menu</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="about">
-      <div class="container about-grid">
-        <h2 class="section-title" data-aos="fade-up">Tentang Nusa Brew</h2>
-        <p class="about-story" data-aos="fade-up" data-aos-delay="80">
-          Nusa Brew lahir dari kecintaan pada kopi berkualitas dan ruang yang
-          terasa seperti rumah. Kami memadukan teknik seduh modern dengan
-          kehangatan pelayanan agar setiap cangkir punya cerita.
-        </p>
-        <div class="icon-cards">
-          <article class="icon-card" data-aos="fade-up" data-aos-delay="100">
-            <i class="fa-solid fa-mountain-sun"></i>
-            <h3>Biji Pilihan</h3>
-            <p>Single origin dan house blend terbaik dari petani lokal.</p>
-          </article>
-          <article class="icon-card" data-aos="fade-up" data-aos-delay="180">
-            <i class="fa-solid fa-user-tie"></i>
-            <h3>Barista Ahli</h3>
-            <p>Diracik oleh barista berpengalaman dengan standar specialty.</p>
-          </article>
-          <article class="icon-card" data-aos="fade-up" data-aos-delay="260">
-            <i class="fa-solid fa-couch"></i>
-            <h3>Suasana Nyaman</h3>
-            <p>Interior modern hangat, cocok untuk kerja maupun santai.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="menu">
-      <div class="container">
-        <h2 class="section-title" data-aos="fade-up">Menu Favorit</h2>
-        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="80">
-          Pilihan minuman dan pastry unggulan untuk menemani hari Anda.
-        </p>
-        <div class="menu-grid">
-          <article class="menu-card" data-aos="zoom-in">
-            <img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?auto=format&fit=crop&w=900&q=80" alt="Espresso" />
-            <div class="menu-content">
-              <h3>Espresso</h3>
-              <p>Shot pekat dengan crema kaya aroma cokelat dan karamel.</p>
-              <p class="price">Rp28.000</p>
-            </div>
-          </article>
-          <article class="menu-card" data-aos="zoom-in" data-aos-delay="60">
-            <img src="https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=900&q=80" alt="Cappuccino" />
-            <div class="menu-content">
-              <h3>Cappuccino</h3>
-              <p>Perpaduan espresso, steamed milk, dan foam lembut.</p>
-              <p class="price">Rp35.000</p>
-            </div>
-          </article>
-          <article class="menu-card" data-aos="zoom-in" data-aos-delay="120">
-            <img src="https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&w=900&q=80" alt="Cold Brew" />
-            <div class="menu-content">
-              <h3>Cold Brew</h3>
-              <p>Seduhan dingin 18 jam dengan rasa halus dan menyegarkan.</p>
-              <p class="price">Rp38.000</p>
-            </div>
-          </article>
-          <article class="menu-card" data-aos="zoom-in" data-aos-delay="180">
-            <img src="https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=900&q=80" alt="Matcha Latte" />
-            <div class="menu-content">
-              <h3>Matcha Latte</h3>
-              <p>Matcha premium yang creamy, earthy, dan menenangkan.</p>
-              <p class="price">Rp37.000</p>
-            </div>
-          </article>
-          <article class="menu-card" data-aos="zoom-in" data-aos-delay="240">
-            <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80" alt="Kopi Susu Aren" />
-            <div class="menu-content">
-              <h3>Kopi Susu Aren</h3>
-              <p>Signature Nusa Brew dengan manis gula aren yang balance.</p>
-              <p class="price">Rp34.000</p>
-            </div>
-          </article>
-          <article class="menu-card" data-aos="zoom-in" data-aos-delay="300">
-            <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=900&q=80" alt="Croissant" />
-            <div class="menu-content">
-              <h3>Croissant</h3>
-              <p>Pastry buttery renyah, ideal untuk teman ngopi pagi.</p>
-              <p class="price">Rp24.000</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section testimonials" id="testimonials">
-      <div class="container">
-        <h2 class="section-title" data-aos="fade-up">Apa Kata Mereka</h2>
-        <div class="testimonial-grid">
-          <article class="testimonial" data-aos="fade-up">
-            <div class="stars">★★★★★</div>
-            <p>
-              "Tempatnya estetik tapi tetap nyaman. Kopi susu arennya balance,
-              nggak terlalu manis. Pasti balik lagi!"
-            </p>
-            <div class="reviewer">
-              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80" alt="Avatar pelanggan 1" />
-              <div>
-                <strong>Nadia P.</strong>
-                <p>Content Creator</p>
-              </div>
-            </div>
-          </article>
-          <article class="testimonial" data-aos="fade-up" data-aos-delay="100">
-            <div class="stars">★★★★★</div>
-            <p>
-              "Baristanya ramah dan ngerti karakter kopi. Cold brew-nya bersih,
-              after taste-nya enak banget."
-            </p>
-            <div class="reviewer">
-              <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80" alt="Avatar pelanggan 2" />
-              <div>
-                <strong>Raka D.</strong>
-                <p>UI Designer</p>
-              </div>
-            </div>
-          </article>
-          <article class="testimonial" data-aos="fade-up" data-aos-delay="200">
-            <div class="stars">★★★★★</div>
-            <p>
-              "Suasana hangat untuk meeting kecil. Cappuccino creamy banget,
-              croissant-nya fresh from oven."
-            </p>
-            <div class="reviewer">
-              <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80" alt="Avatar pelanggan 3" />
-              <div>
-                <strong>Maya S.</strong>
-                <p>Marketing Lead</p>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="gallery">
-      <div class="container">
-        <h2 class="section-title" data-aos="fade-up">Galeri Suasana</h2>
-        <div class="gallery-wrap">
-          <figure class="gallery-item" data-aos="fade-up"><img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=900&q=80" alt="Suasana kafe 1" /></figure>
-          <figure class="gallery-item" data-aos="fade-up"><img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=900&q=80" alt="Suasana kafe 2" /></figure>
-          <figure class="gallery-item" data-aos="fade-up"><img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=900&q=80" alt="Suasana kafe 3" /></figure>
-          <figure class="gallery-item" data-aos="fade-up"><img src="https://images.unsplash.com/photo-1497935586047-93911f9b2f2b?auto=format&fit=crop&w=900&q=80" alt="Suasana kafe 4" /></figure>
-          <figure class="gallery-item" data-aos="fade-up"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80" alt="Suasana kafe 5" /></figure>
-          <figure class="gallery-item" data-aos="fade-up"><img src="https://images.unsplash.com/photo-1522120692535-6d0fbf2b8d5f?auto=format&fit=crop&w=900&q=80" alt="Suasana kafe 6" /></figure>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="visit">
-      <div class="container">
-        <h2 class="section-title" data-aos="fade-up">Visit Us</h2>
-        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="80">
-          Temukan kami di pusat kota Jakarta dan nikmati pengalaman ngopi terbaik.
-        </p>
-        <div class="location-grid">
-          <div class="map" data-aos="fade-right">
-            <iframe
-              src="https://www.google.com/maps?q=Sudirman%20Central%20Business%20District%20Jakarta&output=embed"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              title="Lokasi Nusa Brew"
-            ></iframe>
-          </div>
-          <aside class="hours" data-aos="fade-left">
-            <h3>Jam Operasional</h3>
-            <ul>
-              <li><span>Senin - Jumat</span> <span>07.00 - 22.00</span></li>
-              <li><span>Sabtu</span> <span>08.00 - 23.00</span></li>
-              <li><span>Minggu</span> <span>08.00 - 21.00</span></li>
-            </ul>
-            <p>
-              <strong>Alamat:</strong><br />
-              Nusa Brew Coffee House<br />
-              Jl. Jenderal Sudirman Kav. 52-53,<br />
-              Jakarta Selatan, DKI Jakarta 12190
-            </p>
-          </aside>
-        </div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-grid">
-          <div>
-            <h3 class="logo"><i class="fa-solid fa-seedling"></i>Nusa Brew</h3>
-            <p>Kopi spesialti dengan sentuhan modern dan kehangatan Nusantara.</p>
-          </div>
-          <div>
-            <h4>Ikuti Kami</h4>
-            <div class="socials">
-              <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-              <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-              <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-            </div>
-          </div>
-          <div class="newsletter">
-            <h4>Newsletter</h4>
-            <p>Dapatkan promo dan menu musiman terbaru dari Nusa Brew.</p>
-            <form>
-              <input type="email" placeholder="Masukkan email Anda" required />
-              <button class="btn btn-primary" type="submit">Daftar</button>
-            </form>
-          </div>
-        </div>
-        <p class="copyright">© 2026 Nusa Brew. All rights reserved.</p>
-      </div>
-    </footer>
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-      const navbar = document.getElementById("navbar");
-      const loader = document.getElementById("loader");
-
-      window.addEventListener("scroll", () => {
-        navbar.classList.toggle("scrolled", window.scrollY > 24);
-      });
-
-      window.addEventListener("load", () => {
-        setTimeout(() => {
-          loader.classList.add("hidden");
-        }, 900);
-      });
-
-      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-        anchor.addEventListener("click", function (e) {
-          const target = document.querySelector(this.getAttribute("href"));
-          if (target) {
-            e.preventDefault();
-            target.scrollIntoView({ behavior: "smooth" });
-          }
-        });
-      });
-
-      AOS.init({
-        duration: 750,
-        once: true,
-        offset: 80,
-      });
-    </script>
-  </body>
-</html>
+diff --git a/index.html b/index.html
+new file mode 100644
+index 0000000000000000000000000000000000000000..89e0f686a2c06d4d84bc8c2250f0f373a3c493e3
+--- /dev/null
++++ b/index.html
+@@ -0,0 +1,1250 @@
++<!DOCTYPE html>
++<html lang="id" data-theme="light">
++  <head>
++    <meta charset="UTF-8" />
++    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
++    <title>Nusa Brew — Specialty Coffee</title>
++    <link rel="preconnect" href="https://fonts.googleapis.com" />
++    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
++    <link
++      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=DM+Sans:wght@300;400&display=swap"
++      rel="stylesheet"
++    />
++    <style>
++      :root {
++        --bg: #faf7f2;
++        --card: #ffffff;
++        --secondary: #f3ede3;
++        --text: #2c2319;
++        --muted: #8a7a68;
++        --accent: #c4956a;
++        --accent-light: #e8c9a8;
++        --border: rgba(196, 149, 106, 0.2);
++        --ok: #79b486;
++        --danger: #cb7a74;
++      }
++
++      html[data-theme="dark"] {
++        --bg: #1a1410;
++        --card: #2a221a;
++        --secondary: #211c16;
++        --text: #f0e8db;
++        --muted: #a8967e;
++        --accent: #d4a876;
++        --accent-light: #8c6440;
++        --border: rgba(212, 168, 118, 0.15);
++      }
++
++      * {
++        box-sizing: border-box;
++        margin: 0;
++        padding: 0;
++        transition: all 0.35s ease;
++      }
++
++      html {
++        scroll-behavior: smooth;
++      }
++
++      body {
++        font-family: "DM Sans", sans-serif;
++        background: var(--bg);
++        color: var(--text);
++        overflow-x: hidden;
++      }
++
++      h1,
++      h2,
++      h3,
++      .logo {
++        font-family: "Cormorant Garamond", serif;
++        letter-spacing: 3px;
++        font-weight: 400;
++      }
++
++      .container {
++        width: min(1120px, 92vw);
++        margin: auto;
++      }
++
++      .loader {
++        position: fixed;
++        inset: 0;
++        background: var(--bg);
++        display: grid;
++        place-items: center;
++        z-index: 2000;
++      }
++
++      .loader.hide {
++        opacity: 0;
++        visibility: hidden;
++      }
++
++      .cup {
++        width: 72px;
++        height: 52px;
++        border: 3px solid var(--accent);
++        border-radius: 0 0 16px 16px;
++        position: relative;
++      }
++
++      .cup::after {
++        content: "";
++        width: 14px;
++        height: 20px;
++        border: 3px solid var(--accent);
++        border-left: none;
++        border-radius: 0 12px 12px 0;
++        position: absolute;
++        right: -17px;
++        top: 10px;
++      }
++
++      .steam {
++        position: absolute;
++        top: -28px;
++        left: 10px;
++        width: 6px;
++        height: 20px;
++        border-radius: 50%;
++        background: var(--accent-light);
++        box-shadow: 16px 0 0 var(--accent-light), 32px 0 0 var(--accent-light);
++        animation: steam 1s infinite ease-in-out;
++      }
++
++      @keyframes steam {
++        50% {
++          transform: translateY(-6px);
++          opacity: 0.6;
++        }
++      }
++
++      .navbar {
++        position: sticky;
++        top: 0;
++        z-index: 1200;
++        border-bottom: 1px solid transparent;
++      }
++
++      .navbar.scrolled {
++        backdrop-filter: blur(10px);
++        background: color-mix(in srgb, var(--bg) 84%, transparent);
++        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
++        border-bottom-color: var(--border);
++      }
++
++      .nav-inner {
++        display: flex;
++        align-items: center;
++        justify-content: space-between;
++        padding: 0.85rem 0;
++        gap: 1rem;
++      }
++
++      .logo {
++        font-size: 1.45rem;
++      }
++
++      .nav-links {
++        display: flex;
++        gap: 1rem;
++      }
++
++      .nav-links a {
++        text-decoration: none;
++        color: var(--text);
++        font-size: 0.95rem;
++      }
++
++      .nav-actions {
++        display: flex;
++        align-items: center;
++        gap: 0.55rem;
++      }
++
++      .btn,
++      button {
++        cursor: pointer;
++        border: 1px solid var(--border);
++        background: var(--card);
++        color: var(--text);
++        border-radius: 999px;
++        padding: 0.62rem 1rem;
++        font: inherit;
++        text-decoration: none;
++        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
++        position: relative;
++        overflow: hidden;
++      }
++
++      .btn:hover,
++      button:hover {
++        transform: translateY(-2px);
++        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.09);
++      }
++
++      .btn:active,
++      button:active {
++        transform: scale(0.97);
++      }
++
++      .btn:focus-visible,
++      button:focus-visible,
++      input:focus-visible,
++      textarea:focus-visible {
++        outline: none;
++        box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
++      }
++
++      .btn-solid {
++        background: var(--accent);
++        color: #fff;
++        border-color: transparent;
++      }
++
++      .theme-toggle {
++        width: 42px;
++        height: 42px;
++        border-radius: 50%;
++        padding: 0;
++      }
++
++      .theme-toggle.spin {
++        transform: rotate(360deg);
++      }
++
++      .cart-btn {
++        width: 44px;
++        height: 44px;
++        border-radius: 50%;
++        display: grid;
++        place-items: center;
++        padding: 0;
++      }
++
++      .badge {
++        position: absolute;
++        top: -3px;
++        right: -2px;
++        background: var(--accent);
++        color: #fff;
++        min-width: 18px;
++        height: 18px;
++        border-radius: 999px;
++        font-size: 11px;
++        display: grid;
++        place-items: center;
++      }
++
++      .badge.bounce {
++        animation: bounce 0.5s ease;
++      }
++
++      @keyframes bounce {
++        50% {
++          transform: translateY(-6px);
++        }
++      }
++
++      section {
++        padding: 4.5rem 0;
++      }
++
++      .hero {
++        min-height: 100vh;
++        display: grid;
++        align-items: center;
++        position: relative;
++        background: radial-gradient(circle at 85% 30%, var(--accent-light), transparent 45%),
++          linear-gradient(140deg, var(--secondary), var(--bg));
++      }
++
++      .geo {
++        position: absolute;
++        right: 4vw;
++        top: 20%;
++        width: 220px;
++        height: 220px;
++        border: 1px dashed var(--border);
++        border-radius: 50%;
++      }
++
++      .geo::after {
++        content: "";
++        position: absolute;
++        inset: 24px;
++        border-radius: 50%;
++        background: color-mix(in srgb, var(--accent) 25%, transparent);
++      }
++
++      .hero h1 {
++        font-size: clamp(2.5rem, 7vw, 4.9rem);
++      }
++
++      .hero p {
++        max-width: 620px;
++        color: var(--muted);
++        margin: 1rem 0 1.4rem;
++      }
++
++      .hero-actions {
++        display: flex;
++        flex-wrap: wrap;
++        gap: 0.75rem;
++      }
++
++      .btn-outline {
++        background: transparent;
++      }
++
++      .btn-outline::before,
++      .btn-outline::after {
++        content: "";
++        position: absolute;
++        inset: 0;
++      }
++
++      .btn-outline::before {
++        background: linear-gradient(var(--accent), var(--accent));
++        transform: translateY(100%);
++        z-index: -1;
++      }
++
++      .btn-outline:hover::before {
++        transform: translateY(0);
++      }
++
++      .btn-outline:hover {
++        color: #fff;
++      }
++
++      .btn-outline::after {
++        border: 2px solid var(--accent);
++        border-radius: 999px;
++        animation: none;
++      }
++
++      .btn-outline:hover::after {
++        animation: rotate-border 1.1s linear infinite;
++      }
++
++      @keyframes rotate-border {
++        to {
++          transform: rotate(360deg);
++        }
++      }
++
++      .stats {
++        margin-top: 1.4rem;
++        display: flex;
++        gap: 1rem;
++        flex-wrap: wrap;
++        color: var(--muted);
++      }
++
++      .stats span {
++        background: var(--card);
++        border: 1px solid var(--border);
++        border-radius: 999px;
++        padding: 0.35rem 0.75rem;
++      }
++
++      .section-title {
++        text-align: center;
++        font-size: clamp(1.85rem, 4vw, 2.8rem);
++        margin-bottom: 0.5rem;
++      }
++
++      .section-sub {
++        text-align: center;
++        color: var(--muted);
++        margin-bottom: 2rem;
++      }
++
++      .fade {
++        opacity: 0;
++        transform: translateY(22px);
++      }
++
++      .fade.show {
++        opacity: 1;
++        transform: none;
++      }
++
++      .features,
++      .testimonials,
++      .visit-grid,
++      .footer-grid {
++        display: grid;
++        gap: 1rem;
++      }
++
++      .card {
++        background: var(--card);
++        border: 1px solid var(--border);
++        border-radius: 18px;
++        padding: 1rem;
++      }
++
++      .icon-line {
++        width: 44px;
++        height: 44px;
++        border: 1.5px solid var(--accent);
++        border-radius: 12px;
++        display: grid;
++        place-items: center;
++        margin-bottom: 0.75rem;
++      }
++
++      .filters {
++        display: flex;
++        gap: 0.55rem;
++        flex-wrap: wrap;
++        margin-bottom: 1.2rem;
++      }
++
++      .tab.active {
++        background: var(--accent);
++        color: #fff;
++      }
++
++      .menu-grid {
++        display: grid;
++        gap: 1rem;
++      }
++
++      .menu-card {
++        background: var(--card);
++        border: 1px solid var(--border);
++        border-radius: 16px;
++        padding: 1rem;
++      }
++
++      .menu-card:hover {
++        transform: translateY(-4px);
++        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
++      }
++
++      .menu-head {
++        display: flex;
++        justify-content: space-between;
++        gap: 0.5rem;
++      }
++
++      .price {
++        color: var(--accent);
++        font-weight: 400;
++      }
++
++      .add-btn {
++        width: 34px;
++        height: 34px;
++        border-radius: 50%;
++        padding: 0;
++      }
++
++      .add-btn.glow {
++        box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 15%, transparent);
++      }
++
++      .menu-highlight {
++        animation: pulseSec 1.1s ease;
++      }
++
++      @keyframes pulseSec {
++        50% {
++          box-shadow: 0 0 0 14px color-mix(in srgb, var(--accent) 22%, transparent);
++        }
++      }
++
++      .testi {
++        background: var(--secondary);
++      }
++
++      .avatar {
++        width: 38px;
++        height: 38px;
++        border-radius: 50%;
++        display: grid;
++        place-items: center;
++        background: var(--accent-light);
++        font-size: 0.8rem;
++      }
++
++      .visit-box {
++        background: var(--secondary);
++        border: 1px solid var(--border);
++        border-radius: 18px;
++        padding: 1rem;
++      }
++
++      .footer {
++        padding: 2rem 0 2.4rem;
++        border-top: 1px solid var(--border);
++      }
++
++      .socials {
++        display: flex;
++        gap: 0.5rem;
++      }
++
++      .toast-wrap {
++        position: fixed;
++        left: 50%;
++        bottom: 18px;
++        transform: translateX(-50%);
++        z-index: 1700;
++      }
++
++      .toast {
++        background: var(--text);
++        color: var(--bg);
++        padding: 0.7rem 1rem;
++        border-radius: 999px;
++        border: 1px solid var(--border);
++        opacity: 0;
++        transform: translateY(18px);
++      }
++
++      .toast.show {
++        opacity: 1;
++        transform: none;
++      }
++
++      .overlay {
++        position: fixed;
++        inset: 0;
++        background: color-mix(in srgb, #000 45%, transparent);
++        z-index: 1600;
++        opacity: 0;
++        visibility: hidden;
++      }
++
++      .overlay.open {
++        opacity: 1;
++        visibility: visible;
++      }
++
++      .order-panel {
++        position: absolute;
++        right: 0;
++        top: 0;
++        height: 100%;
++        width: min(980px, 100%);
++        background: var(--bg);
++        transform: translateX(100%);
++        display: grid;
++        grid-template-columns: 1fr;
++        overflow: auto;
++      }
++
++      .overlay.open .order-panel {
++        transform: translateX(0);
++      }
++
++      .order-col {
++        padding: 1.2rem;
++      }
++
++      .order-col + .order-col {
++        border-left: 1px solid var(--border);
++      }
++
++      .item-row {
++        display: grid;
++        grid-template-columns: 1fr auto;
++        gap: 0.5rem;
++        align-items: center;
++        margin-bottom: 0.7rem;
++        border-bottom: 1px dashed var(--border);
++        padding-bottom: 0.7rem;
++      }
++
++      .qty {
++        display: inline-flex;
++        align-items: center;
++        border: 1px solid var(--border);
++        border-radius: 999px;
++        overflow: hidden;
++      }
++
++      .qty button {
++        border: none;
++        border-radius: 0;
++        width: 30px;
++        padding: 0;
++      }
++
++      .qty span {
++        min-width: 30px;
++        text-align: center;
++      }
++
++      .remove {
++        border: none;
++        background: transparent;
++        color: var(--muted);
++      }
++
++      .slide-out {
++        animation: slideOut 0.35s forwards;
++      }
++
++      @keyframes slideOut {
++        to {
++          opacity: 0;
++          transform: translateX(30px);
++        }
++      }
++
++      .totals {
++        margin-top: 1rem;
++        padding-top: 0.8rem;
++        border-top: 1px solid var(--border);
++      }
++
++      .totals p {
++        display: flex;
++        justify-content: space-between;
++        margin-bottom: 0.45rem;
++      }
++
++      .empty {
++        text-align: center;
++        color: var(--muted);
++        border: 1px dashed var(--border);
++        border-radius: 14px;
++        padding: 1rem;
++      }
++
++      .progress {
++        color: var(--muted);
++        font-size: 0.9rem;
++        margin: 0.5rem 0 1rem;
++      }
++
++      .field {
++        margin-bottom: 0.95rem;
++        position: relative;
++      }
++
++      .field input,
++      .field textarea {
++        width: 100%;
++        border: none;
++        border-bottom: 1.5px solid var(--border);
++        background: transparent;
++        color: var(--text);
++        padding: 0.95rem 0.1rem 0.4rem;
++        font: inherit;
++      }
++
++      .field label {
++        position: absolute;
++        top: 0.8rem;
++        left: 0.1rem;
++        color: var(--muted);
++        pointer-events: none;
++      }
++
++      .field input:focus + label,
++      .field input:not(:placeholder-shown) + label,
++      .field textarea:focus + label,
++      .field textarea:not(:placeholder-shown) + label {
++        top: -0.25rem;
++        font-size: 0.78rem;
++        color: var(--accent);
++      }
++
++      .error {
++        font-size: 0.75rem;
++        color: var(--danger);
++        min-height: 14px;
++      }
++
++      .field.invalid input,
++      .field.invalid textarea {
++        border-bottom-color: var(--danger);
++      }
++
++      .pills {
++        display: flex;
++        gap: 0.5rem;
++        flex-wrap: wrap;
++        margin-top: 0.4rem;
++      }
++
++      .pill {
++        border: 1px solid var(--border);
++        border-radius: 999px;
++        padding: 0.42rem 0.8rem;
++      }
++
++      .pill input {
++        display: none;
++      }
++
++      .pill.active {
++        background: var(--accent);
++        color: #fff;
++      }
++
++      .collapse {
++        max-height: 0;
++        overflow: hidden;
++      }
++
++      .collapse.show {
++        max-height: 110px;
++      }
++
++      .checkout-btn.success {
++        background: var(--ok);
++        color: #fff;
++      }
++
++      .spinner {
++        width: 14px;
++        height: 14px;
++        border: 2px solid rgba(255, 255, 255, 0.5);
++        border-top-color: #fff;
++        border-radius: 50%;
++        display: inline-block;
++        margin-right: 0.45rem;
++        animation: spin 0.8s linear infinite;
++        vertical-align: -2px;
++      }
++
++      @keyframes spin {
++        to {
++          transform: rotate(360deg);
++        }
++      }
++
++      .confetti {
++        position: absolute;
++        width: 7px;
++        height: 7px;
++        border-radius: 2px;
++        animation: fall 1.2s linear forwards;
++      }
++
++      @keyframes fall {
++        to {
++          transform: translateY(120px) rotate(220deg);
++          opacity: 0;
++        }
++      }
++
++      .ripple {
++        position: absolute;
++        border-radius: 50%;
++        transform: scale(0);
++        background: rgba(255, 255, 255, 0.4);
++        animation: ripple 0.6s linear;
++        pointer-events: none;
++      }
++
++      @keyframes ripple {
++        to {
++          transform: scale(6);
++          opacity: 0;
++        }
++      }
++
++      @media (min-width: 760px) {
++        .features,
++        .testimonials,
++        .visit-grid,
++        .footer-grid {
++          grid-template-columns: repeat(2, 1fr);
++        }
++
++        .menu-grid {
++          grid-template-columns: repeat(2, 1fr);
++        }
++      }
++
++      @media (min-width: 980px) {
++        .menu-grid {
++          grid-template-columns: repeat(3, 1fr);
++        }
++
++        .testimonials,
++        .features {
++          grid-template-columns: repeat(3, 1fr);
++        }
++
++        .visit-grid,
++        .footer-grid {
++          grid-template-columns: 1fr 1fr;
++        }
++
++        .order-panel {
++          grid-template-columns: 1fr 1fr;
++        }
++      }
++
++      @media (max-width: 800px) {
++        .nav-links {
++          display: none;
++        }
++      }
++    </style>
++  </head>
++  <body>
++    <div class="loader" id="loader">
++      <div style="position: relative">
++        <div class="cup"><span class="steam"></span></div>
++        <p style="margin-top: 14px; text-align: center">NUSA BREW</p>
++      </div>
++    </div>
++
++    <header class="navbar" id="navbar">
++      <div class="container nav-inner">
++        <div class="logo">NUSA BREW</div>
++        <nav class="nav-links">
++          <a href="#menu">Menu</a>
++          <a href="#about">About</a>
++          <a href="#visit">Visit Us</a>
++        </nav>
++        <div class="nav-actions">
++          <button class="cart-btn" id="openCart" aria-label="Cart">🛒<span class="badge" id="cartCount">0</span></button>
++          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
++          <button class="btn btn-solid" id="quickOrder">Pesan</button>
++        </div>
++      </div>
++    </header>
++
++    <section class="hero">
++      <div class="geo"></div>
++      <div class="container fade">
++        <h1>Satu Tegukan, Satu Cerita</h1>
++        <p>Racikan specialty coffee dengan sentuhan modern, lembut, dan hangat untuk setiap momen harimu.</p>
++        <div class="hero-actions">
++          <button class="btn btn-solid" id="heroOrder">Pesan Sekarang</button>
++          <button class="btn btn-outline" id="heroMenu">Lihat Menu</button>
++        </div>
++        <div class="stats">
++          <span>12+ Varian</span><span>4.9 Rating</span><span>5K+ Pelanggan</span>
++        </div>
++      </div>
++    </section>
++
++    <section id="about">
++      <div class="container">
++        <h2 class="section-title fade">Tentang Nusa Brew</h2>
++        <p class="section-sub fade">Ruang kopi yang tenang, pelayanan hangat, dan kualitas biji pilihan dari Nusantara.</p>
++        <div class="features">
++          <article class="card fade"><div class="icon-line">☕</div><h3>Biji Pilihan</h3><p style="color: var(--muted)">Kurasi single origin terbaik untuk profil rasa bersih dan kaya.</p></article>
++          <article class="card fade"><div class="icon-line">⚗</div><h3>Barista Ahli</h3><p style="color: var(--muted)">Teknik seduh presisi dengan rasa konsisten di setiap cangkir.</p></article>
++          <article class="card fade"><div class="icon-line">⌂</div><h3>Suasana Nyaman</h3><p style="color: var(--muted)">Interior soft minimalis untuk kerja, ngobrol, atau me-time.</p></article>
++        </div>
++      </div>
++    </section>
++
++    <section id="menu">
++      <div class="container">
++        <h2 class="section-title fade">Menu Pilihan</h2>
++        <p class="section-sub fade">Pilih favoritmu, tambah ke keranjang, lalu kirim pesanan dengan cepat.</p>
++        <div class="filters fade" id="tabs"></div>
++        <div class="menu-grid" id="menuGrid"></div>
++      </div>
++    </section>
++
++    <section>
++      <div class="container">
++        <h2 class="section-title fade">Cerita Pelanggan</h2>
++        <div class="testimonials">
++          <article class="card testi fade"><p>★★★★★</p><p>“Espresso Toraja-nya bold tapi halus. Tempatnya juga bikin betah lama.”</p><div style="display:flex;gap:.5rem;align-items:center;margin-top:.8rem"><span class="avatar">NA</span><small style="color:var(--muted)">Nadia A.</small></div></article>
++          <article class="card testi fade"><p>★★★★★</p><p>“Kopi Susu Aren paling balance yang pernah saya coba. Pelayanannya cepat.”</p><div style="display:flex;gap:.5rem;align-items:center;margin-top:.8rem"><span class="avatar">RD</span><small style="color:var(--muted)">Raka D.</small></div></article>
++          <article class="card testi fade"><p>★★★★★</p><p>“Matcha Latte creamy dan smooth. Ambience-nya hangat buat meeting.”</p><div style="display:flex;gap:.5rem;align-items:center;margin-top:.8rem"><span class="avatar">MS</span><small style="color:var(--muted)">Maya S.</small></div></article>
++        </div>
++      </div>
++    </section>
++
++    <section id="visit">
++      <div class="container visit-grid">
++        <div class="visit-box fade">
++          <h2 style="margin-bottom:.5rem">Visit Us</h2>
++          <p style="color:var(--muted)">Jl. Jenderal Sudirman Kav. 52-53, Jakarta Selatan</p>
++          <p style="margin-top:.8rem"><strong>Jam buka</strong><br/>Senin–Jumat 07.00–22.00<br/>Sabtu–Minggu 08.00–23.00</p>
++        </div>
++        <div class="visit-box fade">
++          <h2 style="margin-bottom:.5rem">Hubungi</h2>
++          <p style="color:var(--muted)">WhatsApp: +62 812-3456-7890</p>
++          <p style="margin-top:.8rem">Untuk reservasi dan pre-order, gunakan tombol pesanan di kanan atas.</p>
++        </div>
++      </div>
++    </section>
++
++    <footer class="footer">
++      <div class="container footer-grid">
++        <div>
++          <h3>NUSA BREW</h3>
++          <p style="color:var(--muted)">Specialty coffee, modern warmth.</p>
++        </div>
++        <div>
++          <p>Sosial: Instagram · TikTok · X</p>
++          <p style="margin-top:.6rem;color:var(--muted)">© 2026 Nusa Brew. All rights reserved.</p>
++        </div>
++      </div>
++    </footer>
++
++    <div class="overlay" id="overlay">
++      <div class="order-panel">
++        <section class="order-col">
++          <button class="btn" id="closeOverlay">← Kembali</button>
++          <h2 style="margin-top:1rem">Pesanan Anda</h2>
++          <p class="progress">Step 1 Pilih Menu → Step 2 Detail → Step 3 Konfirmasi</p>
++          <div id="orderItems"></div>
++          <div class="totals" id="totals"></div>
++          <button class="btn btn-solid" id="checkoutBtn" style="margin-top:1rem">Buat Pesanan</button>
++        </section>
++        <section class="order-col">
++          <h2>Detail Pemesanan</h2>
++          <form id="orderForm" novalidate>
++            <div class="field" data-field="name">
++              <input id="name" placeholder=" " />
++              <label for="name">Nama lengkap</label>
++              <div class="error"></div>
++            </div>
++            <div class="field" data-field="wa">
++              <input id="wa" placeholder=" " />
++              <label for="wa">Nomor WhatsApp</label>
++              <div class="error"></div>
++            </div>
++
++            <small style="color:var(--muted)">Pilihan layanan</small>
++            <div class="pills" id="servicePills">
++              <label class="pill active"><input type="radio" name="service" value="Dine In" checked />Dine In</label>
++              <label class="pill"><input type="radio" name="service" value="Take Away" />Take Away</label>
++              <label class="pill"><input type="radio" name="service" value="Delivery" />Delivery</label>
++            </div>
++
++            <div id="deliveryWrap" class="collapse">
++              <div class="field" data-field="address">
++                <input id="address" placeholder=" " />
++                <label for="address">Alamat pengantaran</label>
++                <div class="error"></div>
++              </div>
++            </div>
++
++            <div class="field">
++              <textarea id="note" placeholder=" " rows="3"></textarea>
++              <label for="note">Catatan tambahan</label>
++              <div class="error"></div>
++            </div>
++
++            <small style="color:var(--muted)">Waktu</small>
++            <div class="pills" id="timePills">
++              <label class="pill active"><input type="radio" name="waktu" value="Sekarang" checked />Sekarang</label>
++              <label class="pill"><input type="radio" name="waktu" value="Jadwalkan" />Jadwalkan</label>
++            </div>
++            <div id="timeWrap" class="collapse">
++              <div class="field" data-field="schedule">
++                <input id="schedule" type="time" placeholder=" " />
++                <label for="schedule">Pilih waktu</label>
++                <div class="error"></div>
++              </div>
++            </div>
++
++            <button class="btn btn-solid checkout-btn" id="sendBtn" type="submit" style="margin-top:.8rem">Kirim Pesanan</button>
++          </form>
++        </section>
++      </div>
++    </div>
++
++    <div class="toast-wrap"><div class="toast" id="toast"></div></div>
++
++    <script>
++      const menuItems = [
++        { name: "Espresso Toraja", price: 32000, cat: "Hot Coffee", icon: "☕", desc: "Bold, clean, chocolaty." },
++        { name: "Kopi Susu Aren", price: 38000, cat: "Hot Coffee", icon: "🥛", desc: "Palm sugar, creamy." },
++        { name: "Cold Brew Aceh", price: 42000, cat: "Cold Brew", icon: "🧊", desc: "Low acidity, smooth." },
++        { name: "Matcha Latte", price: 45000, cat: "Non-Coffee", icon: "🍵", desc: "Creamy ceremonial matcha." },
++        { name: "Cappuccino", price: 35000, cat: "Hot Coffee", icon: "☁", desc: "Foamy and balanced." },
++        { name: "Croissant", price: 28000, cat: "Makanan", icon: "🥐", desc: "Buttery & flaky." },
++        { name: "Americano", price: 30000, cat: "Hot Coffee", icon: "⚫", desc: "Rich and straightforward." },
++        { name: "Lemon Tea", price: 25000, cat: "Non-Coffee", icon: "🍋", desc: "Fresh and light." }
++      ];
++      const tabs = ["Semua", "Hot Coffee", "Cold Brew", "Non-Coffee", "Makanan"];
++      let activeTab = "Semua";
++      let cart = [];
++
++      const menuGrid = document.getElementById("menuGrid");
++      const tabsWrap = document.getElementById("tabs");
++      const cartCount = document.getElementById("cartCount");
++      const toast = document.getElementById("toast");
++      const overlay = document.getElementById("overlay");
++      const orderItems = document.getElementById("orderItems");
++      const totals = document.getElementById("totals");
++      const checkoutBtn = document.getElementById("checkoutBtn");
++
++      const fmt = (n) => "Rp" + n.toLocaleString("id-ID");
++
++      function showToast(text) {
++        toast.textContent = text;
++        toast.classList.add("show");
++        setTimeout(() => toast.classList.remove("show"), 1700);
++      }
++
++      function addRipple(el, e) {
++        const r = document.createElement("span");
++        const rect = el.getBoundingClientRect();
++        r.className = "ripple";
++        r.style.width = r.style.height = "16px";
++        r.style.left = `${e.clientX - rect.left}px`;
++        r.style.top = `${e.clientY - rect.top}px`;
++        el.appendChild(r);
++        setTimeout(() => r.remove(), 650);
++      }
++
++      function renderTabs() {
++        tabsWrap.innerHTML = tabs
++          .map((t) => `<button class="btn tab ${activeTab === t ? "active" : ""}" data-tab="${t}">${t}</button>`)
++          .join("");
++        tabsWrap.querySelectorAll(".tab").forEach((b) => {
++          b.onclick = () => {
++            activeTab = b.dataset.tab;
++            renderTabs();
++            renderMenu();
++          };
++        });
++      }
++
++      function renderMenu() {
++        const list = activeTab === "Semua" ? menuItems : menuItems.filter((m) => m.cat === activeTab);
++        menuGrid.innerHTML = list
++          .map(
++            (m, i) => `<article class="menu-card fade">
++                <div class="menu-head"><h3>${m.icon} ${m.name}</h3><strong class="price">${fmt(m.price)}</strong></div>
++                <small style="color:var(--muted)">${m.desc}</small>
++                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.8rem">
++                  <small>${m.cat}</small>
++                  <button class="add-btn" data-index="${menuItems.findIndex(x => x.name === m.name)}">+</button>
++                </div>
++              </article>`
++          )
++          .join("");
++
++        observeFade();
++        menuGrid.querySelectorAll(".add-btn").forEach((btn) => {
++          btn.onclick = () => {
++            const item = menuItems[+btn.dataset.index];
++            const found = cart.find((c) => c.name === item.name);
++            if (found) found.qty += 1;
++            else cart.push({ ...item, qty: 1 });
++            btn.textContent = "✓";
++            btn.classList.add("glow");
++            setTimeout(() => {
++              btn.textContent = "+";
++              btn.classList.remove("glow");
++            }, 1500);
++            updateCartCount();
++            renderOrder();
++            showToast("Ditambahkan ke pesanan ✓");
++          };
++        });
++      }
++
++      function updateCartCount() {
++        const totalQty = cart.reduce((a, c) => a + c.qty, 0);
++        cartCount.textContent = totalQty;
++        cartCount.classList.add("bounce");
++        setTimeout(() => cartCount.classList.remove("bounce"), 500);
++      }
++
++      function removeItem(name, row) {
++        row.classList.add("slide-out");
++        setTimeout(() => {
++          cart = cart.filter((c) => c.name !== name);
++          updateCartCount();
++          renderOrder();
++        }, 300);
++      }
++
++      function renderOrder() {
++        if (!cart.length) {
++          orderItems.innerHTML = `<div class="empty">🧺<p>Belum ada pesanan</p></div>`;
++          totals.innerHTML = "";
++          return;
++        }
++
++        orderItems.innerHTML = "";
++        cart.forEach((c) => {
++          const row = document.createElement("div");
++          row.className = "item-row";
++          row.innerHTML = `<div><strong>${c.name}</strong><p style="color:var(--muted)">${fmt(c.price)}</p></div>
++            <div>
++              <button class="remove">×</button>
++              <div class="qty"><button>-</button><span>${c.qty}</span><button>+</button></div>
++            </div>`;
++          const [removeBtn, minus, plus] = [row.querySelector(".remove"), ...row.querySelectorAll(".qty button")];
++          removeBtn.onclick = () => removeItem(c.name, row);
++          minus.onclick = () => {
++            c.qty = Math.max(1, c.qty - 1);
++            updateCartCount();
++            renderOrder();
++          };
++          plus.onclick = () => {
++            c.qty += 1;
++            updateCartCount();
++            renderOrder();
++          };
++          orderItems.appendChild(row);
++        });
++
++        const subtotal = cart.reduce((a, c) => a + c.price * c.qty, 0);
++        const tax = Math.round(subtotal * 0.1);
++        const total = subtotal + tax;
++        totals.innerHTML = `<p><span>Subtotal</span><span>${fmt(subtotal)}</span></p>
++          <p><span>Pajak 10%</span><span>${fmt(tax)}</span></p>
++          <p><strong>Total</strong><strong>${fmt(total)}</strong></p>`;
++      }
++
++      function openOverlay() {
++        overlay.classList.add("open");
++      }
++      function closeOverlay() {
++        overlay.classList.remove("open");
++      }
++
++      document.getElementById("openCart").onclick = openOverlay;
++      document.getElementById("quickOrder").onclick = openOverlay;
++      document.getElementById("closeOverlay").onclick = closeOverlay;
++      overlay.addEventListener("click", (e) => {
++        if (e.target === overlay) closeOverlay();
++      });
++
++      const menuSection = document.getElementById("menu");
++      document.getElementById("heroMenu").onclick = () => {
++        menuSection.scrollIntoView({ behavior: "smooth" });
++        menuSection.classList.add("menu-highlight");
++        setTimeout(() => menuSection.classList.remove("menu-highlight"), 1200);
++      };
++      document.getElementById("heroOrder").onclick = (e) => {
++        addRipple(e.currentTarget, e);
++        menuSection.scrollIntoView({ behavior: "smooth" });
++        menuSection.classList.add("menu-highlight");
++        setTimeout(() => {
++          menuSection.classList.remove("menu-highlight");
++          openOverlay();
++        }, 620);
++      };
++
++      const modeBtn = document.getElementById("themeToggle");
++      function applyTheme(theme) {
++        document.documentElement.setAttribute("data-theme", theme);
++        modeBtn.textContent = theme === "dark" ? "☀" : "🌙";
++      }
++      const saved = localStorage.getItem("theme");
++      const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
++      applyTheme(saved || (systemDark ? "dark" : "light"));
++      modeBtn.onclick = () => {
++        modeBtn.classList.add("spin");
++        setTimeout(() => modeBtn.classList.remove("spin"), 380);
++        const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
++        applyTheme(next);
++        localStorage.setItem("theme", next);
++      };
++
++      function setPills(groupId, wrapId, triggerValue) {
++        const group = document.getElementById(groupId);
++        const wrap = document.getElementById(wrapId);
++        group.querySelectorAll(".pill").forEach((p) => {
++          p.onclick = () => {
++            group.querySelectorAll(".pill").forEach((x) => x.classList.remove("active"));
++            p.classList.add("active");
++            wrap.classList.toggle("show", p.textContent.trim() === triggerValue);
++          };
++        });
++      }
++      setPills("servicePills", "deliveryWrap", "Delivery");
++      setPills("timePills", "timeWrap", "Jadwalkan");
++
++      const form = document.getElementById("orderForm");
++      const validators = {
++        name: (v) => v.trim().length >= 3 || "Nama minimal 3 karakter",
++        wa: (v) => /^\+?\d{9,15}$/.test(v.trim()) || "Nomor WA tidak valid",
++        address: (v) => !document.getElementById("deliveryWrap").classList.contains("show") || v.trim().length >= 8 || "Alamat minimal 8 karakter",
++        schedule: (v) => !document.getElementById("timeWrap").classList.contains("show") || !!v || "Pilih waktu jadwal"
++      };
++
++      function validateField(id) {
++        const field = form.querySelector(`[data-field="${id}"]`);
++        if (!field) return true;
++        const input = document.getElementById(id);
++        const res = validators[id](input.value);
++        field.classList.toggle("invalid", res !== true);
++        field.querySelector(".error").textContent = res === true ? "" : res;
++        return res === true;
++      }
++
++      ["name", "wa", "address", "schedule"].forEach((id) => {
++        const el = document.getElementById(id);
++        if (el) el.addEventListener("input", () => validateField(id));
++      });
++
++      document.getElementById("checkoutBtn").onclick = () => {
++        const b = checkoutBtn;
++        b.innerHTML = '<span class="spinner"></span>Memproses...';
++        b.disabled = true;
++        setTimeout(() => {
++          b.textContent = "✓ Pesanan Dikirim!";
++          b.classList.add("success");
++          for (let i = 0; i < 8; i++) {
++            const c = document.createElement("span");
++            c.className = "confetti";
++            c.style.left = 20 + Math.random() * 140 + "px";
++            c.style.top = "8px";
++            c.style.background = i % 2 ? "var(--accent)" : "var(--accent-light)";
++            b.appendChild(c);
++            setTimeout(() => c.remove(), 1200);
++          }
++          setTimeout(() => {
++            b.disabled = false;
++            b.classList.remove("success");
++            b.textContent = "Buat Pesanan";
++          }, 1800);
++        }, 1500);
++      };
++
++      document.getElementById("sendBtn").addEventListener("click", (e) => {
++        e.preventDefault();
++        const ok = ["name", "wa", "address", "schedule"].every(validateField);
++        if (!ok) return showToast("Periksa detail pemesanan terlebih dahulu");
++        showToast("Data detail tersimpan ✓");
++      });
++
++      document.querySelectorAll("a[href^='#']").forEach((a) => {
++        a.onclick = (e) => {
++          const t = document.querySelector(a.getAttribute("href"));
++          if (!t) return;
++          e.preventDefault();
++          t.scrollIntoView({ behavior: "smooth" });
++        };
++      });
++
++      function observeFade() {
++        const io = new IntersectionObserver(
++          (entries) => entries.forEach((en) => en.isIntersecting && en.target.classList.add("show")),
++          { threshold: 0.15 }
++        );
++        document.querySelectorAll(".fade").forEach((el) => io.observe(el));
++      }
++
++      window.addEventListener("scroll", () => {
++        document.getElementById("navbar").classList.toggle("scrolled", window.scrollY > 18);
++      });
++
++      renderTabs();
++      renderMenu();
++      renderOrder();
++      observeFade();
++
++      setTimeout(() => document.getElementById("loader").classList.add("hide"), 1500);
++    </script>
++  </body>
++</html>
